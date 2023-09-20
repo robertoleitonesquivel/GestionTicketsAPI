@@ -10,4 +10,10 @@ namespace MuniBarva.COMMON
     {
         public const string RecoverPassword = "RecoverPassword";
     }
+
+    public class GeneralConfiguration
+    {
+        public const string URL_API = "UrlAPI";
+        public const string URL_UI = "UrlUI";
+    }
 }

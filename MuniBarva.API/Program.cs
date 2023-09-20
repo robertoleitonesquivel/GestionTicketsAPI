@@ -9,7 +9,15 @@ using MuniBarva.SERVICES;
 using MuniBarva.SERVICES.Interfaces;
 using System.Text;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
 // Add services to the container.
 
@@ -55,6 +63,7 @@ builder.Services.AddScoped<IEncrypt, Encrypt>();
 builder.Services.AddScoped<ISendEmail, SendEmail>();
 builder.Services.AddScoped<ISettingsDao, SettingsDao>();
 builder.Services.AddScoped<ISettingsService, SettingsService>();
+builder.Services.AddScoped<IConfigKey, ConfigKey>();
 builder.Services.AddSingleton<MasterDao>();
 
 //MANEJOMDO JWT
@@ -78,11 +87,13 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsEnvironment(environment))
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 
 
 app.UseCors("MUNIBARVA");

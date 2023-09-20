@@ -20,6 +20,7 @@ namespace MuniBarva.SERVICES
         private readonly IEncrypt _encrypt;
         private readonly ISendEmail _sendEmail;
         private readonly ISettingsService _settingsService;
+        private readonly IConfigKey _configKey;
 
         public LoginService
                 (
@@ -27,14 +28,16 @@ namespace MuniBarva.SERVICES
                     IConfiguration config,
                     IEncrypt encrypt,
                     ISendEmail sendEmail,
-                    ISettingsService settingsService
+                    ISettingsService settingsService,
+                    IConfigKey configKey
                 )
         {
             _loginDAO = loginDAO;
             _config = config;
             _encrypt = encrypt;
             _sendEmail = sendEmail;
-            _settingsService = settingsService; 
+            _settingsService = settingsService;
+            _configKey = configKey;
         }
 
         public async Task<ApiResponse<string>> Send(RecoverPasswordDTO recoverPassword)
@@ -48,6 +51,8 @@ namespace MuniBarva.SERVICES
             string message = settings.Description.Replace("@Email", recoverPassword.Email);
 
             message = message.Replace("@Token", token);
+
+            message = message.Replace("@Url", await _configKey.GetKeyValue(GeneralConfiguration.URL_UI));
 
             await _sendEmail.Send(recoverPassword.Email, "Recuperación de contraseña", message);
 

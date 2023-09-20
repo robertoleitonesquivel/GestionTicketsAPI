@@ -8,24 +8,54 @@
       "sslPort": 44344
     }
   },
-  "profiles": {
-    "MuniBarvaAPI": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7273;http://localhost:5207",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+    "profiles": {
+        "MuniBarvaAPI-Debug": {
+            "commandName": "Project",
+            "dotnetRunMessages": true,
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "applicationUrl": "https://localhost:50214;http://localhost:50215",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Debug"
+            }
+        },
+        "MuniBarvaAPI-Development": {
+            "commandName": "Project",
+            "dotnetRunMessages": true,
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "applicationUrl": "https://incidenciasapidev.munibarva.com;http://incidenciasapidev.munibarva.com",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        "MuniBarvaAPI-Staging": {
+            "commandName": "Project",
+            "dotnetRunMessages": true,
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "applicationUrl": "https://incidenciasapitest.munibarva.com;http://incidenciasapitest.munibarva.com",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Staging"
+            }
+        },
+        "MuniBarvaAPI-Production": {
+            "commandName": "Project",
+            "dotnetRunMessages": true,
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "applicationUrl": "https://incidenciasapi.munibarva.com;http://incidenciasapi.munibarva.com",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Production"
+            }
+        },
+        "IIS Express": {
+            "commandName": "IISExpress",
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        }
     }
-  }
 }
