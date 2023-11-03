@@ -11,6 +11,8 @@ namespace MuniBarva.SERVICES.Interfaces
     public interface ILoginService
     {
         Task<ApiResponse<EmployeesDTO>> SignIn(string _email, string _password);
-        Task<ApiResponse<string>> Send(RecoverPasswordDTO recoverPassword);
+        Task<ApiResponse<string>> Send(SendEmailDTO _sendEmailDTO);
+        Task<ApiResponse<VerifyTokenDTO>> VerifyToken(string _token);
+        Task<ApiResponse<string>> RecoverPassword(RecoverPasswordDTO _recoverPasswordDTO);
     }
 }

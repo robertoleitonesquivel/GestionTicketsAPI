@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace MuniBarva.MODELS.DTO
 {
-    public class RecoverPasswordDTO
+    public class SendEmailDTO
     {
-        public string Password { get; set; }
-        public string Token { get; set; }
+        public string Email { get; set; }   
     }
 }

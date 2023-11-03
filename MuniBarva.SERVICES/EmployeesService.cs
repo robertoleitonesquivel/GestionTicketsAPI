@@ -16,10 +16,10 @@ namespace MuniBarva.SERVICES
 {
     public class EmployeesService : IEmployeesService
     {
-        private readonly IEmployeesDao _employeesDao;
+        private readonly IEmployeesDAO _employeesDao;
         private readonly IEncrypt _encrypt;
 
-        public EmployeesService(IEmployeesDao employeesDao, IEncrypt encrypt)
+        public EmployeesService(IEmployeesDAO employeesDao, IEncrypt encrypt)
         {
             _employeesDao = employeesDao;
             _encrypt = encrypt;

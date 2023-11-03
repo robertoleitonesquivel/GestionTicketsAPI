@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MuniBarva.MODELS;
 using MuniBarva.MODELS.DTO;
 using MuniBarva.MODELS.Models;
 using MuniBarva.SERVICES.Interfaces;
@@ -21,7 +22,7 @@ namespace MuniBarva.API.Controllers
 
 
         [HttpGet("GetAll")]
-        public async Task<ActionResult<List<EmployeesDTO>>> GetAll(int skip, int take)
+        public async Task<ActionResult<ApiResponse<List<GetEmployeesDTO>>>> GetAll(int skip, int take)
         {
             try
             {
@@ -29,7 +30,10 @@ namespace MuniBarva.API.Controllers
 
                 if (employees is not null)
                 {
-                    return Ok(employees);
+                    return Ok(new ApiResponse<List<GetEmployeesDTO>>()
+                    {
+                        Data = employees
+                    });
                 }
                 else
                 {
@@ -44,7 +48,7 @@ namespace MuniBarva.API.Controllers
         }
 
         [HttpGet("GetById")]
-        public async Task<ActionResult<EmployeesDTO>> GetById(int id)
+        public async Task<ActionResult<ApiResponse<GetEmployeesDTO>>> GetById(int id)
         {
             try
             {
@@ -52,7 +56,10 @@ namespace MuniBarva.API.Controllers
 
                 if (employees is not null)
                 {
-                    return Ok(employees);
+                    return Ok(new ApiResponse<GetEmployeesDTO>()
+                    {
+                        Data = employees
+                    });
                 }
                 else
                 {
@@ -67,13 +74,17 @@ namespace MuniBarva.API.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<ActionResult<string>> Add(PostEmployeesDTO employees)
+        public async Task<ActionResult<ApiResponse<string>>> Add(PostEmployeesDTO employees)
         {
             try
             {
                 await _employeesService.Add(employees);
 
-                return Ok("Guardado con éxito.");
+                return Ok(new ApiResponse<string>()
+                {
+                    Message = "Empleado agregado con éxito."
+                });
+
 
             }
             catch (Exception ex)
@@ -84,13 +95,17 @@ namespace MuniBarva.API.Controllers
         }
 
         [HttpPatch("Update")]
-        public async Task<ActionResult<string>> Update(PatchEmployeesDTO employees)
+        public async Task<ActionResult<ApiResponse<string>>> Update(PatchEmployeesDTO employees)
         {
             try
             {
                 await _employeesService.Update(employees);
 
-                return Ok("Actualizado con éxito.");
+                return Ok(new ApiResponse<string>()
+                {
+                    Message = "Empleado actualizado con éxito."
+                });
+
             }
             catch (Exception ex)
             {
@@ -100,14 +115,17 @@ namespace MuniBarva.API.Controllers
         }
 
         [HttpDelete("Delete")]
-        public async Task<ActionResult<string>> Delete(int id)
+        public async Task<ActionResult<ApiResponse<string>>> Delete(int id)
         {
             try
             {
                 await _employeesService.Delete(id);
 
 
-                return Ok("Eliminado con éxito.");
+                return Ok(new ApiResponse<string>()
+                {
+                    Message = "Empleado eliminado con éxito."
+                });
 
             }
             catch (Exception ex)

@@ -34,9 +34,6 @@ namespace MuniBarva.MODELS.DTO
         public string Name { get; set; }
         public string Email { get; set; }
         public string Jwt { get; set; }
+        public List<RolsDTO> Rols { get; set; }
     }
-
-   
-
-
 }

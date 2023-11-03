@@ -57,13 +57,28 @@ builder.Services.AddSwaggerGen(c =>
 //Registro de todas las dependencias
 builder.Services.AddScoped<ILoginDao, LoginDao>();
 builder.Services.AddScoped<ILoginService, LoginService>();
+
 builder.Services.AddScoped<IEmployeesService, EmployeesService>();
-builder.Services.AddScoped<IEmployeesDao, EmployeesDao>();
+builder.Services.AddScoped<IEmployeesDAO, EmployeesDAO>();
+
 builder.Services.AddScoped<IEncrypt, Encrypt>();
+
 builder.Services.AddScoped<ISendEmail, SendEmail>();
+
 builder.Services.AddScoped<ISettingsDao, SettingsDao>();
 builder.Services.AddScoped<ISettingsService, SettingsService>();
+
 builder.Services.AddScoped<IConfigKey, ConfigKey>();
+
+builder.Services.AddScoped<IPermsDAO, PermsDAO>();
+builder.Services.AddScoped<IPermsService, PermsService>();
+
+builder.Services.AddScoped<IMenuDao, MenusDAO>();
+builder.Services.AddScoped<IMenuService, MenusService>();
+
+builder.Services.AddScoped<IRoleDAO, RolsDAO>();
+builder.Services.AddScoped<IRolsService, RolsService>();
+
 builder.Services.AddSingleton<MasterDao>();
 
 //MANEJOMDO JWT

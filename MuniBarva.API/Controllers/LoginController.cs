@@ -17,7 +17,7 @@ namespace MuniBarva.API.Controllers
             _loginService = loginService;
         }
 
-        [HttpGet]
+        [HttpGet("SignIn")]
         public async Task<ActionResult<ApiResponse<EmployeesDTO>>> SignIn(string email, string password)
         {
             try
@@ -40,12 +40,42 @@ namespace MuniBarva.API.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Send(RecoverPasswordDTO recoverPassword)
+        [HttpPost("Send")]
+        public async Task<IActionResult> Send(SendEmailDTO senEmailDTO)
         {
             try
             {
-                var response = await this._loginService.Send(recoverPassword);
+                var response = await this._loginService.Send(senEmailDTO);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("RecoverPassword")]
+        public async Task<IActionResult> RecoverPassword(RecoverPasswordDTO recoverPasswordDTO)
+        {
+            try
+            {
+                var response = await _loginService.RecoverPassword(recoverPasswordDTO);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("VerifyToken")]
+        public async Task<ActionResult<ApiResponse<VerifyTokenDTO>>> VerifyToken(string _token)
+        {
+            try
+            {
+                var response = await this._loginService.VerifyToken(_token);
 
                 return Ok(response);
             }

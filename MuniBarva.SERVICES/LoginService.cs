@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using MuniBarva.COMMON.Interfaces;
 using MuniBarva.MODELS;
 using MuniBarva.COMMON;
+using MuniBarva.MODELS.Models;
 
 namespace MuniBarva.SERVICES
 {
@@ -21,6 +22,7 @@ namespace MuniBarva.SERVICES
         private readonly ISendEmail _sendEmail;
         private readonly ISettingsService _settingsService;
         private readonly IConfigKey _configKey;
+        private readonly IRolsService _rolsService;
 
         public LoginService
                 (
@@ -29,7 +31,8 @@ namespace MuniBarva.SERVICES
                     IEncrypt encrypt,
                     ISendEmail sendEmail,
                     ISettingsService settingsService,
-                    IConfigKey configKey
+                    IConfigKey configKey,
+                    IRolsService rolsService    
                 )
         {
             _loginDAO = loginDAO;
@@ -38,23 +41,38 @@ namespace MuniBarva.SERVICES
             _sendEmail = sendEmail;
             _settingsService = settingsService;
             _configKey = configKey;
+            _rolsService = rolsService;
         }
 
-        public async Task<ApiResponse<string>> Send(RecoverPasswordDTO recoverPassword)
+        public async Task<ApiResponse<string>> RecoverPassword(RecoverPasswordDTO _recoverPasswordDTO)
+        {
+           _recoverPasswordDTO.Password = await _encrypt.Sha256(_recoverPasswordDTO.Password);
+
+            var result = _recoverPasswordDTO.Adapt<Employees>();
+
+            await _loginDAO.RecoverPassword(result);
+
+            return new ApiResponse<string>
+            {
+                Message = "Contraseña actualizada con éxito."
+            };
+        }
+
+        public async Task<ApiResponse<string>> Send(SendEmailDTO _sendEmailDTO)
         {
             var token = await _encrypt.Sha256(Guid.NewGuid().ToString());
 
-            await _loginDAO.SaveToken(token, recoverPassword.Email);
+            await _loginDAO.SaveToken(token, _sendEmailDTO.Email);
 
             var settings = await _settingsService.Get(Constants.RecoverPassword);
 
-            string message = settings.Description.Replace("@Email", recoverPassword.Email);
+            string message = settings.Description.Replace("@Email", _sendEmailDTO.Email);
 
             message = message.Replace("@Token", token);
 
             message = message.Replace("@Url", await _configKey.GetKeyValue(GeneralConfiguration.URL_UI));
 
-            await _sendEmail.Send(recoverPassword.Email, "Recuperación de contraseña", message);
+            await _sendEmail.Send(_sendEmailDTO.Email, "Recuperación de contraseña", message);
 
             return new ApiResponse<string>
             {
@@ -77,10 +95,19 @@ namespace MuniBarva.SERVICES
             {
                 var oEmployeesDTO = oEmployee.Adapt<EmployeesDTO>();
 
+                oEmployeesDTO.Rols = await _rolsService.GetRols(oEmployeesDTO.Id);
+
                 oEmployeesDTO.Jwt = await GetJwT(oEmployeesDTO);
 
                 return new ApiResponse<EmployeesDTO> { Data = oEmployeesDTO };
             }
+        }
+
+        public async Task<ApiResponse<VerifyTokenDTO>> VerifyToken(string _token)
+        {
+            var result = await _loginDAO.VerifyToken(_token);
+
+            return new ApiResponse<VerifyTokenDTO> {  Data = result };
         }
 
         private async Task<string> GetJwT(EmployeesDTO _employeesDTO)

@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace MuniBarva.DAO
 {
-    public class EmployeesDao : IEmployeesDao
+    public class EmployeesDAO : IEmployeesDAO
     {
         private readonly MasterDao _masterDao;
 
-        public EmployeesDao(MasterDao masterDao)
+        public EmployeesDAO(MasterDao masterDao)
         {
             this._masterDao = masterDao;
         }

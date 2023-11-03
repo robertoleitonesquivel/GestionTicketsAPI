@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MuniBarva.DAO.Interfaces
 {
-    public interface IEmployeesDao
+    public interface IEmployeesDAO
     {
         Task Add(Employees _employees);
         Task Update(Employees _employees);

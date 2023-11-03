@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MuniBarva.DAO.Interfaces;
+using MuniBarva.MODELS.DTO;
 using MuniBarva.MODELS.Models;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,32 @@ namespace MuniBarva.DAO
             {
                 await connection.ExecuteAsync("MUNI_PA_SAVETOKEN", new
                 {
-                    Email = _email, 
+                    Email = _email,
                     Token = _token
+                }, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<VerifyTokenDTO> VerifyToken(string _token)
+        {
+            using (var connection = this._masterDao.GetConnection())
+            {
+                return await connection.QueryFirstOrDefaultAsync<VerifyTokenDTO>("MUNI_PA_VERIFYTOKEN", new
+                {
+                    Token = _token
+                }, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task RecoverPassword(Employees _employees)
+        {
+            using (var connection = this._masterDao.GetConnection())
+            {
+                await connection.QueryFirstOrDefaultAsync<Employees>("MUNI_PA_UPDATEPASSWORD", new
+                {
+                    Id = _employees.Id,
+                    Password = _employees.Password,
+                    Token = _employees.Token                 
                 }, commandType: CommandType.StoredProcedure);
             }
         }
